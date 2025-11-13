@@ -1,0 +1,18 @@
+{
+  "name": "node-python-jenkins",
+  "version": "1.0.0",
+  "description": "Demo Node + Python project for Jenkins",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Running Node tests...\" && exit 0",
+    "build": "echo \"Building Node app...\" && exit 0"
+  },
+  "author": "Hemant",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  }
+}
