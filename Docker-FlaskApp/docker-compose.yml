@@ -1,0 +1,8 @@
+version: "3.9"
+
+services:
+  flask-app:
+    image: hemantr1/flask-app:v1
+    build: .
+    ports:
+      - "5000:5000"
