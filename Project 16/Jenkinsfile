@@ -1,0 +1,83 @@
+pipeline {
+    agent any
+
+    environment {
+        // Ensure Terraform runs in non-interactive mode where possible
+        TF_IN_AUTOMATION = 'true'
+        // Make sure AWS credentials are configured in Jenkins credentials store 
+        // and bound to these variables or available in the agent's environment.
+        // AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
+        // AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+    }
+
+    parameters {
+        choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Choose to Apply or Destroy resources')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the repository code
+                checkout scm
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                // Initialize Terraform working directory
+                bat 'terraform init'
+            }
+        }
+
+        stage('Terraform Plan') {
+            when {
+                expression { params.ACTION == 'apply' }
+            }
+            steps {
+                // Generate and save the execution plan
+                bat 'terraform plan -out=tfplan'
+            }
+        }
+
+        stage('Approval') {
+            when {
+                expression { params.ACTION == 'apply' }
+            }
+            steps {
+                // Manual intervention step to approve the plan
+                script {
+                    input message: 'Do you want to apply the plan?', ok: 'Apply'
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            when {
+                expression { params.ACTION == 'apply' }
+            }
+            steps {
+                // Apply the saved plan
+                bat 'terraform apply -input=false tfplan'
+            }
+        }
+
+        stage('Terraform Destroy') {
+            when {
+                expression { params.ACTION == 'destroy' }
+            }
+            steps {
+                script {
+                   input message: 'Are you sure you want to DESTROY all resources?', ok: 'Destroy'
+                }
+                bat 'terraform destroy -auto-approve'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up workspace after run
+            cleanWs()
+        }
+    }
+}
