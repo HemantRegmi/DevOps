@@ -4,10 +4,6 @@ pipeline {
     environment {
         // Ensure Terraform runs in non-interactive mode where possible
         TF_IN_AUTOMATION = 'true'
-        // Make sure AWS credentials are configured in Jenkins credentials store 
-        // and bound to these variables or available in the agent's environment.
-        // AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
-        // AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
     }
 
     parameters {
