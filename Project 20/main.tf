@@ -49,12 +49,18 @@ resource "aws_cloudwatch_dashboard" "ecs_ec2_dashboard" {
         height = 6
         properties = {
           metrics = [
-            [ "AWS/ECS", "RunningTaskCount", "ServiceName", var.service_name, "ClusterName", var.cluster_name ]
+            [ "AWS/ECS", "CPUUtilization", "ServiceName", var.service_name, "ClusterName", var.cluster_name, { stat = "SampleCount", label = "Running Tasks" } ],
+            [ ".", "MemoryUtilization", ".", ".", ".", ".", { stat = "SampleCount", label = "Desired Tasks (approx)" } ]
           ]
           period = 60
-          stat   = "Maximum"
+          stat   = "Average"
           region = var.aws_region
           title  = "Active Task Count"
+          yAxis = {
+            left = {
+              label = "Count"
+            }
+          }
         }
       },
       
