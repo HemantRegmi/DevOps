@@ -8,6 +8,16 @@ variable "service_name" {
   type        = string
 }
 
+variable "aws_region" {
+  description = "AWS region for CloudWatch dashboard"
+  type        = string
+  default     = "ap-south-1"
+}
+
+provider "aws" {
+  region = var.aws_region
+}
+
 resource "aws_cloudwatch_dashboard" "ecs_ec2_dashboard" {
   dashboard_name = "ECS-EC2-Health-${var.cluster_name}"
 
@@ -27,7 +37,7 @@ resource "aws_cloudwatch_dashboard" "ecs_ec2_dashboard" {
           ]
           period = 60
           stat   = "Average"
-          region = "ap-south-1"
+          region = var.aws_region
           title  = "ECS Service Resource Utilization"
         }
       },
@@ -43,7 +53,7 @@ resource "aws_cloudwatch_dashboard" "ecs_ec2_dashboard" {
           ]
           period = 60
           stat   = "Maximum"
-          region = "ap-south-1"
+          region = var.aws_region
           title  = "Active Task Count"
         }
       },
