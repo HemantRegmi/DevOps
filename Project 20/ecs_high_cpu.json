@@ -1,0 +1,17 @@
+{
+    "AlarmName": "ECS_Prod_High_CPU",
+    "AlarmDescription": "Triggered if ECS CPU exceeds 80% for 3 periods",
+    "ActionsEnabled": true,
+    "AlarmActions": ["arn:aws:sns:ap-south-1:637423224696:Monitoring-Alerts-Topic"],
+    "MetricName": "CPUUtilization",
+    "Namespace": "AWS/ECS",
+    "Statistic": "Average",
+    "Dimensions": [
+        { "Name": "ClusterName", "Value": "graceful-bear-si6rvg"},
+        { "Name": "ServiceName", "Value": "ECSSNS-service-vrpo8kqv"}
+    ],
+    "Period": 60,
+    "EvaluationPeriods": 3,
+    "Threshold": 80.0,
+    "ComparisonOperator": "GreaterThanThreshold"
+}

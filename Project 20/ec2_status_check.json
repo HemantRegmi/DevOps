@@ -1,0 +1,14 @@
+{
+    "AlarmName": "EC2_Hardware_Failure",
+    "AlarmDescription": "Critical alert for EC2 hardware or system failure",
+    "ActionsEnabled": true,
+    "AlarmActions": ["arn:aws:sns:ap-south-1:637423224696:Monitoring-Alerts-Topic"],
+    "MetricName": "StatusCheckFailed",
+    "Namespace": "AWS/EC2",
+    "Statistic": "Maximum",
+    "Dimensions": [{ "Name": "InstanceId", "Value": "i-0919450c84c5f8d34" }],
+    "Period": 60,
+    "EvaluationPeriods": 1,
+    "Threshold": 1.0,
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold"
+}
